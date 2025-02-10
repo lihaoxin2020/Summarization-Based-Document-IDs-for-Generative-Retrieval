@@ -1,5 +1,7 @@
 # Summarization-Based Document IDs for Generative Retrieval with Language Models
 
+**[The codebase is aged. Feel free to drop me an email if this is relevant to you!]**
+
 This is the (probably outdated) codebase for [Summarization-Based Document IDs for Generative Retrieval with Language Models](https://arxiv.org/abs/2311.08593). The dataset is uploaded [here](https://huggingface.co/datasets/lihaoxin2020/abstractive-content-based-IDs).
 
 Feel free to leave an issue or email if you have any question! 
