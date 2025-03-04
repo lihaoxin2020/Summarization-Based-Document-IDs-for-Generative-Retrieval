@@ -92,7 +92,6 @@ def main():
             ds_train = ds_train[len(outputs):]
 
     dataloader = DataLoader(
-        # SimpleDataset(ds_train), 
         ds_train,
         shuffle=False,
         batch_size=batch_size
@@ -117,14 +116,7 @@ def main():
                 for j, doc in enumerate(text):
                     outputs[doc] = avg_pooled[j]
             elif mode == 'attn':
-                attn = output.attentions[-1].cpu()
-                # attn_padded = nn.functional.pad(attn, (0, 4609-513, 0, 4608-4096))  # pad to (:, :, 4609, 4608)
-                # attn_full = attn_padded.view(batch_size, num_heads, -1, 4608)[:, :, :4096, 256:-256]
-                # del attn_padded
-                # assert attn_full.shape == torch.Size([batch_size, num_heads, model_length, model_length])
-
-                attn_full = attn
-                # attn_weights = attn_full.mean(dim=1).sum(-2) / inputs['attention_mask'].sum(dim=-1).cpu().unsqueeze(-1)
+                attn_full = output.attentions[-1].cpu()
                 attn_weights = attn_full.sum(-2) / inputs['attention_mask'].sum(dim=-1).cpu().unsqueeze(-1).unsqueeze(-1)
                 token_index = torch.topk(attn_weights, 15)[1]
                 tokens = inputs['input_ids'].cpu()[token_index]

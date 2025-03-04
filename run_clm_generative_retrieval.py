@@ -550,7 +550,10 @@ def main():
     #         )
 
     ####
-    lm_datasets = datasets.load_from_disk(data_args.load_from_disk)
+    if data_args.dataset_name:
+        lm_datasets = datasets.load_dataset(data_args.dataset_name, data_args.dataset_config_name)
+    else:
+        lm_datasets = datasets.load_from_disk(data_args.load_from_disk)
 
     if training_args.do_train:
         if "train" not in lm_datasets:
@@ -567,7 +570,7 @@ def main():
         if data_args.max_eval_samples is not None:
             max_eval_samples = min(len(eval_dataset), data_args.max_eval_samples)
             eval_dataset = eval_dataset.select(range(max_eval_samples))
-        eval_labels = [tokenizer.batch_decode(ex['labels'], skip_special_tokens=True) for ex in eval_dataset]
+        eval_labels = [tokenizer.batch_decode([ex['labels']], skip_special_tokens=True) for ex in eval_dataset]
         if data_args.corpus_file is not None: 
             with open(data_args.corpus_file) as f:
                 valid_id_list = [ex['key'] for ex in json.load(f)]
